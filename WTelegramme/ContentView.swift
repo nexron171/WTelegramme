@@ -36,4 +36,17 @@ final class WebView: NSObject, NSViewRepresentable, WKNavigationDelegate {
         
         nsView.load(request)
     }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        
+        if let url = navigationAction.request.url {
+            if url.absoluteString.contains("web.telegram.org") {
+                return .allow
+            } else {
+                NSWorkspace.shared.open(url)
+            }
+        }
+        
+        return .cancel
+    }
 }
